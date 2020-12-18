@@ -1,11 +1,14 @@
 import React from 'react'
 import EvenListItem from './eventListItem'
 
-function EventList(props) {
+function EventList({events, selectEvent, deleteEvent}) {
   return (
     <>
-      {props.events.map((event) => (
-        <EvenListItem event={event} key={event.id} />
+      {events.map((event) => (
+        <EvenListItem event={event} key={event.id} 
+        selectEvent={selectEvent}
+        deleteEvent={deleteEvent}
+        />
       ))}
     </>
   );
