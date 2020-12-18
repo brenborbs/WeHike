@@ -3,13 +3,19 @@ import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css';
 import './styles.css';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom'
 import reportWebVitals from './reportWebVitals';
 
 // Hot module replacement
 const rootEl = document.getElementById('root');
 
 function render() {
-ReactDOM.render(<App />, rootEl);
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  rootEl
+);
 }
 
 if(module.hot) {

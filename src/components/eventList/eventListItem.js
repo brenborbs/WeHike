@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react'
 import EventListAttendee from './eventListAttendee'
 
@@ -38,7 +39,7 @@ export default function EventListItem({ event, selectEvent, deleteEvent }) {
           content="Delete"
         />
         <Button
-          onClick={() => selectEvent(event)}
+          as={Link} to={`/hikes/${event.id}`}
           basic
           color="pink"
           floated="right"

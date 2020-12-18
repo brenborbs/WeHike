@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { Link } from 'react-router-dom'
 import { Segment, Header, Form, Button } from 'semantic-ui-react'
 import cuid from 'cuid'
 
@@ -87,7 +88,7 @@ function EventForm({
         color="purple" 
         content="Submit" />
         <Button
-          onClick={() => setFormOpen(false)}
+          as={Link} to="/hikes"
           type="submit"
           floated="right"
           content="Cancel"
