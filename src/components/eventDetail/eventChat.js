@@ -7,9 +7,8 @@ function EventChat() {
       <Segment
         textAlign="center"
         attached="top"
-        inverted
-        color="teal"
         style={{ border: 'none' }}
+        inverted
       >
         <Header>Chat about this event</Header>
       </Segment>
@@ -83,7 +82,7 @@ function EventChat() {
               content="Add Reply"
               labelPosition="left"
               icon="edit"
-              primary
+              positive
             />
           </Form>
         </Comment.Group>

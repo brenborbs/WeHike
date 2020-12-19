@@ -5,11 +5,11 @@ import HomePage from './pages/HomePage'
 import EventDetailedPage from './pages/EventDetailedPage'
 import { EventForm } from './components/form' 
 import { Container } from 'semantic-ui-react'
-import { Route } from 'react-router-dom'
+import { Route, useLocation } from 'react-router-dom'
 
 
 function App() {
-
+const { key } = useLocation()
   
   return (
     <>
@@ -23,7 +23,7 @@ function App() {
               <Route exact path="/hikes" component={EventDashboard} />
               <Route path="/hikes/:id" component={EventDetailedPage} />
 
-              <Route path={["/createHike", "/manage/:id"]} component={EventForm} />
+              <Route path={["/createHike", "/manage/:id"]} component={EventForm} key={key} />
             
             </Container>
           </>

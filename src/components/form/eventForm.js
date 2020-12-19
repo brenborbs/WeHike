@@ -2,9 +2,15 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import { Segment, Header, Form, Button } from 'semantic-ui-react'
 import cuid from 'cuid'
+import { useSelector, useDispatch } from 'react-redux'
+import { createEvent, updateEvent } from '../../actions/actions'
 
-function EventForm({
-  setFormOpen, setEvents, createEvent, selectedEvent, updateEvent}) {
+function EventForm({match, history}) {
+    const dispatch = useDispatch()
+    const selectedEvent = useSelector((state) =>
+      state.event.events.find((e) => e.id === match.params.id)
+    );
+
   const initialValues = selectedEvent ?? {
     title: '',
     category: '',
@@ -23,15 +29,15 @@ function EventForm({
 
   function handleFormSubmit() {
     selectedEvent 
-    ? updateEvent({...selectedEvent, ...values}) 
-    : createEvent({
+    ? dispatch(updateEvent({...selectedEvent, ...values})) 
+    : dispatch (createEvent({
       ...values, 
       id: cuid(), 
       hostedBy: 'Steve', 
       attendees: [], 
       hostPhotoURL: '/assets/user.png'
-  })
-    setFormOpen(false)
+  }))
+  history.push('/hikes');
   }
   return (
     <Segment clearing>
@@ -85,7 +91,7 @@ function EventForm({
         <Button 
         type="submit" 
         floated="right" 
-        color="purple" 
+        positive 
         content="Submit" />
         <Button
           as={Link} to="/hikes"

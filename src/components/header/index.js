@@ -13,7 +13,7 @@ export default function Header({setFormOpen}) {
   }
 
   return (
-    <Menu fixed="top">
+    <Menu fixed="top" id="fonts">
       <Container>
         <Menu.Item as={NavLink} exact to="/" header>
           WeHIKE
@@ -21,7 +21,7 @@ export default function Header({setFormOpen}) {
         <Menu.Item as={NavLink} to="/hikes" name="Hikes" />
         {authenticated && (
           <Menu.Item as={NavLink} to="/createHike">
-            <Button color="pink" content="Create" />
+            <Button positive content="Create" />
           </Menu.Item>
         )}
         {authenticated 
