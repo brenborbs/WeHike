@@ -3,6 +3,7 @@ import EventDashboard from './pages/EventDashboard'
 import Header from './components/header'
 import HomePage from './pages/HomePage'
 import EventDetailedPage from './pages/EventDetailedPage'
+import { ModalManager} from './components/modals'
 import { EventForm } from './components/form' 
 import { Container } from 'semantic-ui-react'
 import { Route, useLocation } from 'react-router-dom'
@@ -13,6 +14,7 @@ const { key } = useLocation()
   
   return (
     <>
+      <ModalManager />
       <Route exact path="/" component={HomePage} />
       <Route
         path={'/(.+)'}

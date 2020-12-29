@@ -137,3 +137,12 @@ body {
 .ui.inverted.attached.segment {
   border: none;
 }
+
+.event-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}

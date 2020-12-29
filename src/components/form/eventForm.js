@@ -1,9 +1,16 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Segment, Header, Form, Button } from 'semantic-ui-react'
+import { Segment, Header, Button } from 'semantic-ui-react'
 import cuid from 'cuid'
+import { categoryData } from '../../api/categoryOptions'
+import TextInput from './textInput'
+import TextArea from './textArea'
+import SelectInput from './selectInput'
+import DateInput from './dateInput'
 import { useSelector, useDispatch } from 'react-redux'
 import { createEvent, updateEvent } from '../../actions/actions'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
 
 function EventForm({match, history}) {
     const dispatch = useDispatch()
@@ -20,86 +27,74 @@ function EventForm({match, history}) {
     date: ''
   }
 
-  const [values , setValues] = useState(initialValues)
+  const validationSchema = Yup.object({
+    title: Yup.string().required('Title must not be empty'),
+    category: Yup.string().required('Category must not be empty'),
+    description: Yup.string().required(),
+    city: Yup.string().required(),
+    venue: Yup.string().required(),
+    date: Yup.string().required(),
+  });
 
-  function handleInputChange(e) {
-    const{ name, value } = e.target;
-    setValues({...values, [name]:value })
-  }
-
-  function handleFormSubmit() {
-    selectedEvent 
-    ? dispatch(updateEvent({...selectedEvent, ...values})) 
-    : dispatch (createEvent({
-      ...values, 
-      id: cuid(), 
-      hostedBy: 'Steve', 
-      attendees: [], 
-      hostPhotoURL: '/assets/user.png'
-  }))
-  history.push('/hikes');
-  }
+  
   return (
     <Segment clearing>
-      <Header content={ selectedEvent ? "Edit hike" : "Create new hike"} />
-      <Form onSubmit={handleFormSubmit}>
-        <Form.Field>
-          <input
-            name="title"
-            type="text"
-            placeholder="Event title"
-            value={values.title}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <input
-            placeholder="Category"
-            name="category"
-            type="text"
-            value={values.category}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <input
-            type="text"
-            placeholder="Description"
-            name="description"
-            value={values.description}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <input
-            type="text"
-            placeholder="Location"
-            name="venue"            
-            value={values.venue}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <input
-            type="date"
-            placeholder="Date"
-            name="date"
-            value={values.date}
-            onChange={(e) => handleInputChange(e)}
-          />
-        </Form.Field>
-        <Button 
-        type="submit" 
-        floated="right" 
-        positive 
-        content="Submit" />
-        <Button
-          as={Link} to="/hikes"
-          type="submit"
-          floated="right"
-          content="Cancel"
-        />
-      </Form>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          selectedEvent
+            ? dispatch(updateEvent({ ...selectedEvent, ...values }))
+            : dispatch(
+                createEvent({
+                  ...values,
+                  id: cuid(),
+                  hostedBy: 'Steve',
+                  attendees: [],
+                  hostPhotoURL: '/assets/user.png',
+                })
+              );
+          history.push('/hikes');
+        }}
+      >
+        {({ isSubmiting, dirty, isValid }) => (
+          <Form className="ui form">
+            <Header sub color="blue" content="Hiking Details" />
+            <TextInput name="title" placeholder="Title" />
+            <SelectInput
+              name="category"
+              placeholder="Category"
+              options={categoryData}
+            />
+            <TextArea name="description" placeholder="Description" rows={3} />
+            <Header sub color="blue" content="Location Details" />
+            <TextInput name="city" placeholder="City" />
+            <TextInput name="venue" placeholder="Location" />
+            <DateInput
+              name="date"
+              placeholderText="Hike date"
+              timeFormat="HH:mm"
+              showTimeSelect
+              TimeCaption="time"
+              dateFormat="MMMM d, yyyy h:mm a"
+            />
+            <Button 
+            loading={isSubmiting} 
+            disabled={!isValid || !dirty || isSubmiting}
+            type="submit" 
+            floated="right" 
+            positive content="Submit" />
+            <Button
+            disabled={isSubmiting}
+              as={Link}
+              to="/hikes"
+              type="submit"
+              floated="right"
+              content="Cancel"
+            />
+          </Form>
+        )}
+      </Formik>
     </Segment>
   );
 }

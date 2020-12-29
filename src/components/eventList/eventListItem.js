@@ -4,6 +4,7 @@ import { Segment, Item, Icon, List, Button } from 'semantic-ui-react'
 import EventListAttendee from './eventListAttendee'
 import { useDispatch } from 'react-redux'
 import { deleteEvent } from '../../actions/actions'
+import { format } from 'date-fns'
 
 export default function EventListItem({ event }) {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ export default function EventListItem({ event }) {
       </Segment>
       <Segment>
         <span>
-          <Icon name="clock" /> {event.date}
+          <Icon name="clock" /> {format(event.date, 'MMMM d, yyyy h:mm a')}
           <Icon name="marker" /> {event.venue}
         </span>
       </Segment>
@@ -35,20 +36,23 @@ export default function EventListItem({ event }) {
         </List>
       </Segment>
       <Segment clearing>
-        <div>{event.description}</div>
-        <Button
-          onClick={() => dispatch(deleteEvent(event.id))}
-          color="blue"
-          floated="right"
-          content="Delete"
-        />
-        <Button
-          as={Link} to={`/hikes/${event.id}`}
-          basic
-          color="blue"
-          floated="right"
-          content="View"
-        />
+        <div style={{ marginBottom: '1rem' }}>{event.description}</div>
+        <div className="event-buttons">
+          <Button
+            as={Link}
+            to={`/hikes/${event.id}`}
+            basic
+            color="blue"
+            // floated="left"
+            content="View"
+          />
+          <Button
+            onClick={() => dispatch(deleteEvent(event.id))}
+            color="blue"
+            // floated="left"
+            content="Delete"
+          />
+        </div>
       </Segment>
     </Segment.Group>
   );
